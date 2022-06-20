@@ -8,7 +8,7 @@ LICENSE file in the root directory of this source tree.
 from setuptools import find_packages, setup
 
 setup(
-    name="ocp-models",
+    name="ocpmodels",
     version="0.0.3",
     description="Machine learning models for use in catalysis as part of the Open Catalyst Project",
     url="https://github.com/Open-Catalyst-Project/ocp",
