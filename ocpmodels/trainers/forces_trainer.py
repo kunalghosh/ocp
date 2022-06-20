@@ -195,7 +195,7 @@ class ForcesTrainer(BaseTrainer):
         ):
             with torch.cuda.amp.autocast(enabled=self.scaler is not None):
                 out = self._forward(batch_list)
-                P = self.P
+                P = self.model.get_P()
                 predictions["P"] = np.array(P.cpu().detach().to(torch.float16))
 
             if self.normalizers is not None and "target" in self.normalizers:
