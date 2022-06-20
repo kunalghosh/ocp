@@ -51,6 +51,9 @@ class OCPDataParallel(torch.nn.DataParallel):
                 output_device=self.src_device,
             )
 
+    def get_P(self):
+        return self.module.get_P()
+
     def forward(self, batch_list):
         if self.cpu:
             return self.module(batch_list[0])
