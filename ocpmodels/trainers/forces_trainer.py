@@ -178,7 +178,13 @@ class ForcesTrainer(BaseTrainer):
             self.normalizers["target"].to(self.device)
             self.normalizers["grad_target"].to(self.device)
 
-        predictions = {"id": [], "energy": [], "forces": [], "chunk_idx": []}
+        predictions = {
+            "id": [],
+            "energy": [],
+            "forces": [],
+            "chunk_idx": [],
+            "P": [],
+        }
 
         for i, batch_list in tqdm(
             enumerate(data_loader),
@@ -189,6 +195,8 @@ class ForcesTrainer(BaseTrainer):
         ):
             with torch.cuda.amp.autocast(enabled=self.scaler is not None):
                 out = self._forward(batch_list)
+                P = self.get_P()
+                predictions["P"] = np.array(P.cpu().detach().to(torch.float16))
 
             if self.normalizers is not None and "target" in self.normalizers:
                 out["energy"] = self.normalizers["target"].denorm(

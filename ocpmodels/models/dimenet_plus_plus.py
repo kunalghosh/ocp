@@ -454,14 +454,19 @@ class DimeNetPlusPlusWrap(DimeNetPlusPlus):
             x = interaction_block(x, rbf, sbf, idx_kj, idx_ji)
             P += output_block(x, rbf, i, num_nodes=pos.size(0))
 
+        self.P = P
         energy = P.sum(dim=0) if batch is None else scatter(P, batch, dim=0)
 
         return energy
+
+    def get_P(self):
+        return self.P
 
     def forward(self, data):
         if self.regress_forces:
             data.pos.requires_grad_(True)
         energy = self._forward(data)
+        print(self.P)
 
         if self.regress_forces:
             forces = -1 * (
